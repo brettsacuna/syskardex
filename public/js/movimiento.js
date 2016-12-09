@@ -3,6 +3,7 @@ var rowSelected;
 btns = "<button type='button' class='btn btn-flat btn-success' id='addMovimiento'><i class='fa fa-plus'></i> Registrar</button> ";
 btns += "<button type='button' class='btn btn-flat btn-warning' id='editMovimiento'><i class='fa fa-pencil'></i> Editar</button> ";
 btns += "<button type='button' class='btn btn-flat btn-danger' id='delMovimiento'><i class='fa fa-trash'></i> Eliminar</button> ";
+btns += "<button type='button' class='btn btn-flat btn-primary' id='showMovimiento'><i class='fa fa-eye'></i> Visualizar</button> ";
 param.language.lengthMenu = btns+param.language.lengthMenu;
 param.sAjaxSource = url_aplication+"movimiento/grilla";
 param.fnServerData = function( sUrl, aoData, fnCallback ) {
@@ -51,6 +52,15 @@ $("#editMovimiento").click(function(){
 		Alerta("Seleccione un registro", "warning");
 	}else{
 		editMovimiento(rowSelected.DT_RowId);
+	}
+});
+
+$("#showMovimiento").click(function(){
+	rowSelected = tblMovimiento.fnGetData(tblMovimiento.$('tr.bg-warning'));
+	if(rowSelected === null){
+		Alerta("Seleccione un registro", "warning");
+	}else{
+        window.open(document.location+'/generate?movimiento='+rowSelected.DT_RowId);
 	}
 });
 

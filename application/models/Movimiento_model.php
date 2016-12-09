@@ -161,5 +161,21 @@ class Movimiento_model extends CI_Model {
       ->get()->result();
     	return array("Movimiento"=>$row, "DetMovimiento"=>$DetMovimiento);
     }
+
+	public function get_cabecera($movimiento){
+		$this->db->join('tipo_movimiento', 'tipo_movimiento.id_tmov = movimiento.id_tmov');
+		$this->db->join('persona', 'persona.id_pers = movimiento.id_pers', 'left');
+		$this->db->join('procedencia', 'procedencia.id_proc = movimiento.id_proc', 'left');
+		$this->db->join('entidad', 'entidad.id_ent = movimiento.id_ent', 'left');
+
+		return $this->db->get_where('movimiento', array('movimiento.id_mov' => $movimiento))->result();
+	}
+
+	public function get_detalle($movimiento){
+		$this->db->join('producto', 'producto.id_pro = det_movimiento.id_pro');
+		$this->db->join('unidad_medida', 'unidad_medida.id_uni = det_movimiento.id_uni');
+
+		return $this->db->get_where('det_movimiento', array('det_movimiento.id_mov' => $movimiento))->result();
+	}
 }
 ?>

@@ -59,5 +59,21 @@ class Producto_model extends CI_Model {
     	$row = $this->rowData($this->table, $this->key_table, $key);
     	return $row;
     }
+
+	public function get_productos($filtro) {
+		$this->db->select('producto.*, concepto_general.desc_con');
+		$this->db->join('concepto_general', 'concepto_general.id_con = producto.id_con');
+
+        $this->db->group_start();
+        $this->db->like('producto.desc_pro', $filtro);
+        $this->db->or_like('producto.cuenta_contable', $filtro);
+        $this->db->or_like('producto.clasificador', $filtro);
+        $this->db->or_like('concepto_general.desc_con', $filtro);
+        $this->db->group_end();
+
+		$this->db->where('producto.stock_pro > ', 0);
+
+    	return $this->db->get('producto')->result();
+    }
 }
 ?>
